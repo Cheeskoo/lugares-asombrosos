@@ -1,0 +1,58 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html{
+    font-family: 'inter', sans-serif;
+    background-image: url(imagen/background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+body{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+nav{
+    padding: 20px 10%;
+}
+main{
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-gap: 20px;
+    padding: 20px 10%;
+}
+/*Estilos*/
+nav h1{
+    color: #fff;
+    text-shadow: 0 0 5px #000;
+    font-style: italic;
+    font-size: 2.5em;
+}
+main h2{
+    color: #fff;
+    text-shadow: 0 0 5px #000;
+    font-size: 1.8em;
+}
+main p{
+    color: #000000;
+    text-shadow: 0 0 2px #ffffff;
+    font-size: 1.2em;
+}
+
+button{
+    margin: 20px auto;
+    background-color: #00d46a;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #fff;
+    text-shadow: 0 0 5px #000;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
