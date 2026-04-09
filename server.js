@@ -1,6 +1,7 @@
 import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { serverStatic } from './utils/serverStatic.js';
 
 const PORT = 3000;
 
@@ -19,32 +20,17 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    if(req.url === '/api' && req.method === 'GET') {
-        try{
-            const jsonPath = path.join(__dirname, 'data.json');
-            const data = await fs.readFile(jsonPath, 'utf-8');
-
-            res.writeHead(200,{
-                'Content-type': 'application/json',
-                'Charset': 'utf-8'
-            })
-            res.end(data);
-        }catch(err){
-            res.writeHead(500, {
-                'Content-type': 'application/json'});
-                res.end(JSON.stringify({
-                    error: `No se pudo leer la base de datos`
-                }))
+    if (!req.url.startsWith('/api')) {
+        return await serverStatic(req, res, __dirname)
+    } else if(req.url === '/api'){
+        if(req.method === 'GET'){
+            const route = path.join(__dirname, 'data.json');
+            return await getContent(route, res)
+        }
     }
-}else {
-        res.writeHead(404,{
-            'Content-Type': 'application/json'
-        })
-        res.end(JSON.stringify({ message:'Ruta no encontrada'}))
-    }
-
 });
-
 server.listen(PORT, () => {
   console.log(`Server running on port:${PORT}`)
 });
+
+///npm run dev
