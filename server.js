@@ -16,7 +16,9 @@ const server = http.createServer((req, res) => {
     }
     if(req.url === '/api' && req.method === 'GET') {
         try{
-            const jsonPath = path.join(__dirname, 'lugares.json');
+            const jsonPath = path.join(__dirname, 'data.json');
+            const data = await fs.readFile(jsonPath);
+            
         }
     }
 });
