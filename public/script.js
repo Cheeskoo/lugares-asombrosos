@@ -5,7 +5,12 @@ const descripcion = document.getElementById("descripcion-lugar");
 let lugares = [];
 
 try {
-    const response = await fetch("http://localhost:3000/api");
+    const response = await fetch("http://localhost:3000/api", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    } );
     const data = await response.json();
     lugares = data;
     titulo.textContent = lugares[0].titulo;
