@@ -1,17 +1,15 @@
 # Lugares Asombrosos
 
-Aplicación web que muestra lugares naturales e históricos de Sudamérica, con su foto, su país y una breve descripción. Un pequeño servidor HTTP en Node.js (sin frameworks) sirve el frontend y expone una API con los datos de los lugares.
-
-> **Estado:** proyecto en desarrollo. La API y la carga dinámica de lugares todavía se están armando (ver [Estado actual](#estado-actual)).
+Aplicación web que muestra lugares naturales e históricos de Sudamérica, con su foto, su país y una breve descripción. Cada vez que tocás **Generar nuevo lugar** aparece otro lugar al azar. Un pequeño servidor HTTP en Node.js (sin frameworks) sirve el frontend y expone una API con los datos de los lugares.
 
 ## Características
 
 - **28 lugares de 10 países** sudamericanos: Argentina, Bolivia, Brasil, Chile, Colombia, Ecuador, Paraguay, Perú, Uruguay y Venezuela (por ejemplo, el Glaciar Perito Moreno, el Salar de Uyuni, Machu Picchu o el Salto Ángel).
 - **Servidor HTTP propio** con el módulo nativo `node:http`, sin Express ni otras dependencias de producción.
-- **Servidor de archivos estáticos** casero que detecta el `Content-Type` según la extensión del archivo.
-- **API REST** en `/api` que devuelve la información de los lugares en JSON.
+- **Servidor de archivos estáticos** casero que detecta el `Content-Type` según la extensión del archivo, responde 404 si no existe y bloquea rutas fuera de `public/`.
+- **API REST** en `/api` que devuelve un lugar al azar en JSON.
 - **CORS habilitado** y manejo de solicitudes *preflight* (`OPTIONS`).
-- **Frontend en HTML, CSS y JavaScript puro** con un botón para generar un nuevo lugar.
+- **Frontend en HTML, CSS y JavaScript puro** con un botón para generar un nuevo lugar (sin repetir el que ya se muestra).
 
 ## Tecnologías
 
@@ -42,15 +40,15 @@ npm run dev
 npm start
 ```
 
-Después abrí <http://localhost:3000> en el navegador.
+Después abrí <http://localhost:3000> en el navegador. Para usar otro puerto: `PORT=8080 npm start`.
 
 ## API
 
 | Método | Ruta   | Descripción                                   |
 |--------|--------|-----------------------------------------------|
-| GET    | `/api` | Devuelve información de los lugares en JSON.  |
+| GET    | `/api` | Devuelve un lugar elegido al azar, en JSON.   |
 
-Cada lugar en `data.json` tiene esta forma:
+Ejemplo de respuesta (cada lugar en `data.json` tiene esta forma):
 
 ```json
 {
@@ -61,7 +59,7 @@ Cada lugar en `data.json` tiene esta forma:
 }
 ```
 
-Cualquier otra ruta que no empiece con `/api` se sirve como archivo estático desde la carpeta `public/`.
+Otras rutas bajo `/api` responden 404, y otros métodos en `/api` responden 405. Cualquier ruta que no empiece con `/api` se sirve como archivo estático desde la carpeta `public/`.
 
 ## Estructura del proyecto
 
@@ -69,30 +67,27 @@ Cualquier otra ruta que no empiece con `/api` se sirve como archivo estático de
 lugares-asombrosos/
 ├── server.js               # Servidor HTTP: rutas /api y archivos estáticos
 ├── data.json               # Datos de los lugares (país, título, descripción, imagen)
-├── imagenes/               # Fotos de cada lugar
-├── public/                 # Frontend
+├── public/                 # Frontend (archivos estáticos)
 │   ├── index.html
 │   ├── style.css
-│   ├── script.js           # Pide los datos a /api y los muestra
+│   ├── script.js           # Pide un lugar a /api y lo muestra
+│   ├── imagenes/           # Fotos de cada lugar
 │   └── imagen/
 │       └── background.jpg  # Imagen de fondo
 ├── utils/
 │   ├── serverStatic.js     # Sirve archivos de public/
-│   ├── getContent.js       # Lee data.json y arma la respuesta de la API
+│   ├── getContent.js       # Lee data.json y responde con un lugar al azar
 │   ├── getContentType.js   # Content-Type según la extensión
 │   └── sendResponse.js     # Helper para enviar respuestas
 ├── package.json
 └── package-lock.json
 ```
 
-## Estado actual
+## Agregar un lugar nuevo
 
-Pendientes para que la app funcione de punta a punta:
-
-- Importar `getContent` en `server.js` y corregir sus imports (`./contentType.js` no existe; la función correcta es `getContentType` en `./getContentType.js`).
-- En `getContent.js`, parsear el JSON con `JSON.parse` y usar `Math.floor` para elegir un lugar al azar.
-- Cargar `script.js` con `type="module"` (usa `await` de nivel superior) y conectar el botón **Generar nuevo lugar**.
-- Servir la carpeta `imagenes/` desde el servidor para que el frontend pueda mostrar las fotos.
+1. Guardá la foto en `public/imagenes/` (por ejemplo `mi-lugar.jpg`).
+2. Agregá un objeto a `data.json` con `pais`, `titulo`, `descripcion` e `imagen` (`"imagenes/mi-lugar.jpg"`).
+3. Reiniciá el servidor si no estás usando `npm run dev`.
 
 ## Autor
 

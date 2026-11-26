@@ -56,3 +56,17 @@ button{
     cursor: pointer;
     border-radius: 5px;
 }
+main img{
+    width: 100%;
+    max-width: 800px;
+    max-height: 60vh;
+    object-fit: cover;
+    border-radius: 10px;
+    margin: 0 auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+button:disabled{
+    opacity: 0.6;
+    cursor: wait;
+}

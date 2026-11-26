@@ -1,18 +1,15 @@
-import http from 'node:http';
 import fs from 'node:fs/promises';
-import path from 'node:path';
-import {sendResponse} from './sendResponse.js';
-import {contentType} from './contentType.js';
+import { sendResponse } from './sendResponse.js';
 
+/* Lee data.json y responde con un lugar elegido al azar */
 export async function getContent(route, res) {
     try {
-        const data = await fs.readFile(route); 
-        const content = data[mathFloor(Math.random() * data.length)]
-        console.log(typeof content);
-        sendResponse(res, 200, content, contentType(content));
+        const data = await fs.readFile(route, 'utf-8');
+        const lugares = JSON.parse(data);
+        const lugar = lugares[Math.floor(Math.random() * lugares.length)];
+        sendResponse(res, 200, JSON.stringify(lugar), 'application/json; charset=utf-8');
     } catch (err) {
-        res.statusCode = 500;
-        res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+        console.error(err);
+        sendResponse(res, 500, JSON.stringify({ error: 'Internal Server Error' }), 'application/json');
     }
 }

@@ -1,7 +1,7 @@
 export function getContentType(ext) {
     switch (ext) {
         case '.html':
-            return 'text/html';
+            return 'text/html; charset=utf-8';
         case '.css':
             return 'text/css';
         case '.js':
@@ -11,7 +11,7 @@ export function getContentType(ext) {
         case '.png':
             return 'image/png';
         case '.jpg':
-            return 'image/jpg';
+            return 'image/jpeg';
         case '.jpeg':
             return 'image/jpeg';
         default:
